@@ -1,0 +1,69 @@
+# To Do List for 3D Model viewer
+# In no particular order
+
+- Initial checkin
+  - stipped to the minimum
+  - loads a model
+  - Orbit control
+
+- Use Query String Parameters to pass models and options to webpage
+
+- Add Menu for changing options on the fly
+
+- Enable STL viewing
+
+- "Size" model
+  - We want the model to be as large as possible within the viewing area
+
+- Automatically center model
+  - use the "box" method to figure out the "bottom" (along z) and raise it to z=0
+
+- Automatically position camera based on model size and position
+
+- Automatically size grid to model 
+  - We want the model to look reasonably sized compared to the grid.
+  - not to many squares per unit. we dont want the grid to obscure the model
+
+- Display units on grid
+  - mark each square of the grid?
+  - maybe just a scale in the corner for sizing purposes? (ex. 1 grid square = 1cm)
+
+- Display Axis
+  - Label X/Y/Z
+
+- Display grid for Z axis
+  - Do we need a full grid like we have for X/Y?
+  - Maybe just a line?
+
+- Enable helper grid 
+  - selectable through menu or through query string parameter
+  
+- Enable Gcode viewing
+
+- Watermark display
+  place a translucent object/image over window.
+
+- Configurable light source
+  - We had to add some light to make the model visible.
+  - Would like the ability to adjust brightness
+  - selectable through menu or through query string parameter
+
+- optional automatic rotation
+  - selectable through menu or through query string parameter
+
+- message border
+  - Similar to github message border on bottom of screen
+  - selectable through menu or through query string parameter
+
+- optional model info
+  - selectable through menu or through query string parameter
+
+- Optional shadow
+  - selectable through menu or through query string parameter
+
+- Optional perfomance statistics
+  - selectable through menu or through query string parameter
+
+- flip model
+  - used to orient the model so it "lays" properly
+  - selectable through menu or through query string parameter

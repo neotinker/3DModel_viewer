@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>3D Model Viewer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="https://threejs.org/examples/main.css">
+  </head>
+  <body>
+    <script type="module">
+      import * as THREE from 'https://threejs.org/build/three.module.js';
+      import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
+      import { STLLoader } from 'https://threejs.org/examples/jsm/loaders/STLLoader.js';
+
+      let camera, scene, renderer;
+
+      init();
+      animate();
+
+      function init() {
+        const container = document.createElement( 'div' );
+        document.body.appendChild( container );
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color( 0x999999 );
+        scene.add( new THREE.AmbientLight( 0x999999 ) );
+
+        camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 500 );
+        camera.up.set( 0, 0, 1 );
+        camera.position.set( 0, -9, 6 );
+        camera.add( new THREE.PointLight( 0xffffff, 0.8 ) );
+        scene.add( camera );
+
+        // Grid
+        const grid = new THREE.GridHelper( 50, 50, 0xffffff, 0x000000 );
+        grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
+        scene.add( grid );
+
+        loadSTLModel();
+
+        // renderer
+        renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.outputEncoding = THREE.sRGBEncoding;
+
+        container.appendChild( renderer.domElement );
+
+        // Camera Control
+        const controls = new OrbitControls( camera, renderer.domElement );
+        controls.addEventListener( 'change', render );
+        controls.target.set( 0, 1.2, 2 );
+        controls.update();
+
+        window.addEventListener( 'resize', onWindowResize, false );
+
+      }
+
+      function loadSTLModel() {
+        const loader = new STLLoader();
+        loader.load( 'https://threejs.org/examples/models/stl/binary/pr2_head_tilt.stl', function ( geometry ) {
+          const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
+          const mesh = new THREE.Mesh( geometry, material );
+          mesh.position.set( 0, 0, 0 );
+          mesh.scale.set( 10, 10, 10 );
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          scene.add( mesh );
+        } );
+
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+      }
+
+      function animate() {
+        requestAnimationFrame( animate );
+        render();
+      }
+
+      function render() {
+        renderer.render( scene, camera );
+      }
+    </script>
+  </body>
+</html>
+
