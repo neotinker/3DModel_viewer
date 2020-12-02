@@ -12,6 +12,19 @@
       import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
       import { STLLoader } from 'https://threejs.org/examples/jsm/loaders/STLLoader.js';
 
+      // Get Query String
+      var searchParams = new URLSearchParams(window.location.search);
+      var modelUrl;
+
+      // Get model to display
+      if (searchParams.has("model")) {
+        // Id like to handle multiple models but just do one for now
+        modelUrl = searchParams.getAll("model")[0];
+      } else {
+        // Should I load a default model or leave it empty?
+        modelUrl = 'https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl'
+      }
+
       let camera, scene, renderer;
 
       init();
@@ -31,12 +44,18 @@
         camera.add( new THREE.PointLight( 0xffffff, 0.8 ) );
         scene.add( camera );
 
+        // Pick a model loader based on file ending.
+	// This is a bit of a hack. I will need to change this.
+        var re = /(?:\.([^.]+))?$/;
+	var ext = re.exec(modelUrl)[1];
+	if (ext === "stl") {
+          loadSTLModel(modelUrl);
+        }
+
         // Grid
         const grid = new THREE.GridHelper( 50, 50, 0xffffff, 0x000000 );
         grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
         scene.add( grid );
-
-        loadSTLModel();
 
         // renderer
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -56,9 +75,9 @@
 
       }
 
-      function loadSTLModel() {
+      function loadSTLModel(localUrl) {
         const loader = new STLLoader();
-        loader.load( 'https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl', function ( geometry ) {
+        loader.load( localUrl, function ( geometry ) {
           const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
           const mesh = new THREE.Mesh( geometry, material );
           mesh.position.set( 0, 0, 0 );
