@@ -45,10 +45,10 @@
         scene.add( camera );
 
         // Pick a model loader based on file ending.
-	// This is a bit of a hack. I will need to change this.
+        // This is a bit of a hack. I will need to change this.
         var re = /(?:\.([^.]+))?$/;
-	var ext = re.exec(modelUrl)[1];
-	if (ext === "stl") {
+        var ext = re.exec(modelUrl)[1];
+        if (ext === "stl") {
           loadSTLModel(modelUrl);
         }
 
