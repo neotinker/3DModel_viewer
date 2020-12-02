@@ -67,3 +67,6 @@
 - flip model
   - used to orient the model so it "lays" properly
   - selectable through menu or through query string parameter
+
+- Add local file support
+  - I might want to run this entirely locally in my browser
