@@ -52,10 +52,6 @@
           loadSTLModel(modelUrl);
         }
 
-        // Grid
-        const grid = new THREE.GridHelper( 50, 50, 0xffffff, 0x000000 );
-        grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
-        scene.add( grid );
 
         // renderer
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -64,12 +60,6 @@
         renderer.outputEncoding = THREE.sRGBEncoding;
 
         container.appendChild( renderer.domElement );
-
-        // Camera Control
-        const controls = new OrbitControls( camera, renderer.domElement );
-        controls.addEventListener( 'change', render );
-        controls.target.set( 0, 1.2, 2 );
-        controls.update();
 
         window.addEventListener( 'resize', onWindowResize, false );
 
@@ -80,10 +70,28 @@
         loader.load( localUrl, function ( geometry ) {
           const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
           const mesh = new THREE.Mesh( geometry, material );
-          mesh.position.set( 0, 0, 0 );
           mesh.castShadow = true;
           mesh.receiveShadow = true;
+
+          // Get center and move model
+          mesh.geometry.computeBoundingBox();
+          var center = mesh.geometry.boundingBox.getCenter();
+	  var modelSize = mesh.geometry.boundingBox.getSize();
+          mesh.localToWorld( center );
+          mesh.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
           scene.add( mesh );
+
+          // Grid
+          const grid = new THREE.GridHelper( 500, 125, 0xffffff, 0x000000 );
+          grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
+          scene.add( grid );
+
+          // Camera Control
+          const controls = new OrbitControls( camera, renderer.domElement );
+          controls.addEventListener( 'change', render );
+          controls.target.set( 0, 1.2, 2 );
+          controls.update();
+
         } );
 
       }
