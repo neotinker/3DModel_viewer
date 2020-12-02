@@ -76,7 +76,7 @@
           // Get center and move model
           mesh.geometry.computeBoundingBox();
           var center = mesh.geometry.boundingBox.getCenter();
-	  var modelSize = mesh.geometry.boundingBox.getSize();
+          var modelSize = mesh.geometry.boundingBox.getSize();
           mesh.localToWorld( center );
           mesh.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
           scene.add( mesh );
