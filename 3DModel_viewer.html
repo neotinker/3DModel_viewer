@@ -81,8 +81,11 @@
           mesh.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
           scene.add( mesh );
 
+          // Get longest side (X or Y)
+	  var modelLength = ((modelSize.x > modelSize.y) ? modelSize.x : modelSize.y);
+
           // Grid
-          const grid = new THREE.GridHelper( 500, 125, 0xffffff, 0x000000 );
+          const grid = new THREE.GridHelper( 3 * modelLength, 3 * Math.round(modelLength/10), 0xffffff, 0x000000 );
           grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
           scene.add( grid );
 
