@@ -89,8 +89,8 @@
 	  var fudge_offset = 1.25;
 
           // Which is longer? Height or width
-	  if (modelSize.x > modelSize.z) {
-            var modelScreenSize = modelSize.x * fudge_offset;
+	  if (modelLength > modelSize.z) {
+            var modelScreenSize = modelLength * fudge_offset;
             var fov = camera.fov * camera.aspect;
           } else {
             var modelScreenSize = modelSize.z * fudge_offset;
