@@ -38,7 +38,7 @@
         scene.background = new THREE.Color( 0x999999 );
         scene.add( new THREE.AmbientLight( 0x999999 ) );
 
-        camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 500 );
+        camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
         camera.up.set( 0, 0, 1 );
         camera.position.set( 0, -9, 6 );
         camera.add( new THREE.PointLight( 0xffffff, 0.8 ) );
