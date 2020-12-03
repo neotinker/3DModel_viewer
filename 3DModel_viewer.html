@@ -38,12 +38,6 @@
         scene.background = new THREE.Color( 0x999999 );
         scene.add( new THREE.AmbientLight( 0x999999 ) );
 
-        camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
-        camera.up.set( 0, 0, 1 );
-        camera.position.set( 0, -9, 6 );
-        camera.add( new THREE.PointLight( 0xffffff, 0.8 ) );
-        scene.add( camera );
-
         // Pick a model loader based on file ending.
         // This is a bit of a hack. I will need to change this.
         var re = /(?:\.([^.]+))?$/;
@@ -89,10 +83,30 @@
           grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
           scene.add( grid );
 
+          camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
+
+          // We the model to be a little smaller than window so lets add a fudge factor
+	  var fudge_offset = 1.25;
+
+          // Which is longer? Height or width
+	  if (modelSize.x > modelSize.z) {
+            var modelScreenSize = modelSize.x * fudge_offset;
+            var fov = camera.fov * camera.aspect;
+          } else {
+            var modelScreenSize = modelSize.z * fudge_offset;
+            var fov = camera.fov;
+	  }
+
+          var cameraDistance = modelScreenSize / Math.tan( fov * Math.PI / 180 );
+          camera.up.set( 0, 0, 1 );
+          camera.position.set( 0, -1 * cameraDistance, modelScreenSize );
+          camera.add( new THREE.PointLight( 0xffffff, 0.8 ) );
+          scene.add( camera );
+
           // Camera Control
           const controls = new OrbitControls( camera, renderer.domElement );
           controls.addEventListener( 'change', render );
-          controls.target.set( 0, 1.2, 2 );
+          controls.target.set( 0, 0, 0 );
           controls.update();
 
         } );
