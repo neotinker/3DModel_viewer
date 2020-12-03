@@ -1,26 +1,26 @@
 # To Do List for 3D Model viewer
 # In no particular order
 
-- Initial checkin
+- (DONE) Initial checkin
   - stipped to the minimum
   - loads a model
   - Orbit control
 
-- Use Query String Parameters to pass models and options to webpage
+- (DONE) Use Query String Parameters to pass models and options to webpage
 
 - Add Menu for changing options on the fly
 
-- Enable STL viewing
+- (DONE) Enable STL viewing
 
-- "Size" model
+- (DONE) "Size" model
   - We want the model to be as large as possible within the viewing area
 
-- Automatically center model
+- (DONE) Automatically center model
   - use the "box" method to figure out the "bottom" (along z) and raise it to z=0
 
-- Automatically position camera based on model size and position
+- (DONE) Automatically position camera based on model size and position
 
-- Automatically size grid to model 
+- (DONE) Automatically size grid to model 
   - We want the model to look reasonably sized compared to the grid.
   - not to many squares per unit. we dont want the grid to obscure the model
 
