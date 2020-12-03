@@ -25,7 +25,7 @@
         modelUrl = 'https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl'
       }
 
-      let camera, scene, renderer;
+      let camera, scene, renderer, mesh;
 
       init();
       animate();
@@ -63,54 +63,58 @@
         const loader = new STLLoader();
         loader.load( localUrl, function ( geometry ) {
           const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
-          const mesh = new THREE.Mesh( geometry, material );
+          mesh = new THREE.Mesh( geometry, material );
           mesh.castShadow = true;
           mesh.receiveShadow = true;
 
-          // Get center and move model
-          mesh.geometry.computeBoundingBox();
-          var center = mesh.geometry.boundingBox.getCenter();
-          var modelSize = mesh.geometry.boundingBox.getSize();
-          mesh.localToWorld( center );
-          mesh.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
-          scene.add( mesh );
-
-          // Get longest side (X or Y)
-	  var modelLength = ((modelSize.x > modelSize.y) ? modelSize.x : modelSize.y);
-
-          // Grid
-          const grid = new THREE.GridHelper( 3 * modelLength, 3 * Math.round(modelLength/10), 0xffffff, 0x000000 );
-          grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
-          scene.add( grid );
-
-          camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
-
-          // We the model to be a little smaller than window so lets add a fudge factor
-	  var fudge_offset = 1.25;
-
-          // Which is longer? Height or width
-	  if (modelLength > modelSize.z) {
-            var modelScreenSize = modelLength * fudge_offset;
-            var fov = camera.fov * camera.aspect;
-          } else {
-            var modelScreenSize = modelSize.z * fudge_offset;
-            var fov = camera.fov;
-	  }
-
-          var cameraDistance = modelScreenSize / Math.tan( fov * Math.PI / 180 );
-          camera.up.set( 0, 0, 1 );
-          camera.position.set( 0, -1 * cameraDistance, modelScreenSize );
-          camera.add( new THREE.PointLight( 0xffffff, 0.8 ) );
-          scene.add( camera );
-
-          // Camera Control
-          const controls = new OrbitControls( camera, renderer.domElement );
-          controls.addEventListener( 'change', render );
-          controls.target.set( 0, 0, 0 );
-          controls.update();
+          setupView();
 
         } );
 
+      }
+
+      function setupView() { 
+        // Get center and move model
+        mesh.geometry.computeBoundingBox();
+        var center = mesh.geometry.boundingBox.getCenter();
+        var modelSize = mesh.geometry.boundingBox.getSize();
+        mesh.localToWorld( center );
+        mesh.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
+        scene.add( mesh );
+
+        // Get longest side (X or Y)
+        var modelLength = ((modelSize.x > modelSize.y) ? modelSize.x : modelSize.y);
+
+        // Grid
+        const grid = new THREE.GridHelper( 3 * modelLength, 3 * Math.round(modelLength/10), 0xffffff, 0x000000 );
+        grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
+        scene.add( grid );
+
+        camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
+
+        // We the model to be a little smaller than window so lets add a fudge factor
+        var fudge_offset = 1.25;
+
+        // Which is longer? Height or width
+        if (modelLength > modelSize.z) {
+          var modelScreenSize = modelLength * fudge_offset;
+          var fov = camera.fov * camera.aspect;
+        } else {
+          var modelScreenSize = modelSize.z * fudge_offset;
+          var fov = camera.fov;
+        }
+
+        var cameraDistance = modelScreenSize / Math.tan( fov * Math.PI / 180 );
+        camera.up.set( 0, 0, 1 );
+        camera.position.set( 0, -1 * cameraDistance, modelScreenSize );
+        camera.add( new THREE.PointLight( 0xffffff, 0.8 ) );
+        scene.add( camera );
+
+        // Camera Control
+        const controls = new OrbitControls( camera, renderer.domElement );
+        controls.addEventListener( 'change', render );
+        controls.target.set( 0, 0, 0 );
+        controls.update();
       }
 
       function onWindowResize() {
