@@ -8,7 +8,7 @@ It is mostly based on the webgl_loader_amf.html example even though I implemente
 
 https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl
 
-If you want to test a different model, pass the model url with the model parameter.
+If you want to test a different model, pass the model url with the model parameter. The model URL must use "HTTP/HTTPS". You can't load model files from your local filesystem using "file:///" but you can load the 3DModel_viewer.html file using "file:///".
 
 Here are the models I have been testing with:
 3DModel_viewer.html?model=https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl
