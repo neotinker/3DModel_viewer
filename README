@@ -8,8 +8,12 @@ It is mostly based on the webgl_loader_amf.html example even though I implemente
 
 https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl
 
-If you want to test a different model, such as the rook.amf from the threejs example models, pass the model url with the model parameter.
+If you want to test a different model, pass the model url with the model parameter.
 
+Here are the models I have been testing with:
+3DModel_viewer.html?model=https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl
 3DModel_viewer.html?model=https://threejs.org/examples/models/amf/rook.amf 
+3DModel_viewer.html?model=https://threejs.org/examples/models/gcode/benchy.gcode
+3DModel_viewer.html?model=https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf
 
-The viewer only supports stl and amf models at the moment and possibly not well. :) 
+The viewer only supports stli, amf, gcode, and gltf models at the moment and possibly not well. :) 
