@@ -4,11 +4,11 @@ I do not consider this viewer *safe* so use at your own risk.
 
 It is mostly based on the webgl_loader_amf.html example even though I implemented STL model support first. It had the general look I was going for.
 
-3DModel_viewer.html currently only supports one parameter "model" which you can use to pass in a model to view. If you don't pass in a model parameter is will display the dust filter stl from the Mendel90 3D printer.
+3DModel_viewer.html currently only supports one parameter ("model"), which you can use to pass in a model to view. If you don't pass in a model parameter is will display the dust filter stl from the Mendel90 3D printer.
 
 https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl
 
-If you want to test a deferent model, such as the rook.amf from the threejs example models, pass the model url with the model parameter.
+If you want to test a different model, such as the rook.amf from the threejs example models, pass the model url with the model parameter.
 
 3DModel_viewer.html?model=https://threejs.org/examples/models/amf/rook.amf 
 
