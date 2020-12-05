@@ -11,6 +11,7 @@
       import * as THREE from 'https://threejs.org/build/three.module.js';
       import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
       import { STLLoader } from 'https://threejs.org/examples/jsm/loaders/STLLoader.js';
+      import { AMFLoader } from 'https://threejs.org/examples/jsm/loaders/AMFLoader.js';
 
       // Get Query String
       var searchParams = new URLSearchParams(window.location.search);
@@ -44,6 +45,8 @@
         var ext = re.exec(modelUrl)[1];
         if (ext === "stl") {
           loadSTLModel(modelUrl);
+        } else if (ext === "amf") {
+          loadAMFModel(modelUrl);
         }
 
 
@@ -69,6 +72,20 @@
 
           setupView();
 
+        } );
+
+      }
+
+      function loadAMFModel(localUrl) {
+        const loader = new AMFLoader();
+        loader.load( localUrl, function ( amfobject ) {
+          console.log('amfobject = ' + amfobject);
+          console.log('amfobject.name = ' + amfobject.name);
+          console.log('amfobject.children[0].name = ' + amfobject.children[0].name);
+          mesh = amfobject.children[0].children[0];
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+	  setupView();
         } );
 
       }
