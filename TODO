@@ -38,7 +38,7 @@
 - Enable helper grid 
   - selectable through menu or through query string parameter
   
-- Enable Gcode viewing
+- (DONE) Enable Gcode viewing
 
 - Watermark display
   place a translucent object/image over window.
