@@ -16,4 +16,4 @@ Here are the models I have been testing with:
 3DModel_viewer.html?model=https://threejs.org/examples/models/gcode/benchy.gcode
 3DModel_viewer.html?model=https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf
 
-The viewer only supports stli, amf, gcode, and gltf models at the moment and possibly not well. :) 
+The viewer only supports stl, amf, gcode, and gltf models at the moment and possibly not well. :) 
