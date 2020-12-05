@@ -103,7 +103,15 @@
         var modelLength = ((modelSize.x > modelSize.y) ? modelSize.x : modelSize.y);
 
         // Grid
-        const grid = new THREE.GridHelper( 3 * modelLength, 3 * Math.round(modelLength/10), 0xffffff, 0x000000 );
+        // Lets default to 10mm between lines with a minimum grid width of 20mm
+        // If model is less than 10mm wide then set grid interval to 1mm
+        // round modelLength to the nearest multiple of 10
+        var nModelLength = 10 * Math.ceil(modelLength/10);
+        // set grid width
+        var gridWidth = 2 * nModelLength;
+        // set grid interval
+        var gridIntervals = ((modelLength >= 10) ? ( gridWidth / 10 ) : gridWidth);
+        const grid = new THREE.GridHelper( gridWidth, gridIntervals, 0xffffff, 0x000000 );
         grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
         scene.add( grid );
 
