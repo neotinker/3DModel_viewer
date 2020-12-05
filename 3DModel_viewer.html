@@ -12,6 +12,7 @@
       import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
       import { STLLoader } from 'https://threejs.org/examples/jsm/loaders/STLLoader.js';
       import { AMFLoader } from 'https://threejs.org/examples/jsm/loaders/AMFLoader.js';
+      import { GCodeLoader } from 'https://threejs.org/examples/jsm/loaders/GCodeLoader.js';
 
       // Get Query String
       var searchParams = new URLSearchParams(window.location.search);
@@ -26,10 +27,10 @@
         modelUrl = 'https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl'
       }
 
-      let camera, scene, renderer, mesh;
+      let camera, scene, renderer, mesh, modelObject;
 
       init();
-      animate();
+      render();
 
       function init() {
         const container = document.createElement( 'div' );
@@ -47,6 +48,8 @@
           loadSTLModel(modelUrl);
         } else if (ext === "amf") {
           loadAMFModel(modelUrl);
+        } else if (ext === "gcode") {
+          loadGCodeModel(modelUrl);
         }
 
 
@@ -67,11 +70,10 @@
         loader.load( localUrl, function ( geometry ) {
           const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
           mesh = new THREE.Mesh( geometry, material );
-          mesh.castShadow = true;
-          mesh.receiveShadow = true;
-
-          setupView();
-
+          modelObject = mesh;
+          modelObject.castShadow = true;
+          modelObject.receiveShadow = true;
+          viewSetup();
         } );
 
       }
@@ -82,22 +84,41 @@
           console.log('amfobject = ' + amfobject);
           console.log('amfobject.name = ' + amfobject.name);
           console.log('amfobject.children[0].name = ' + amfobject.children[0].name);
-          mesh = amfobject.children[0].children[0];
-          mesh.castShadow = true;
-          mesh.receiveShadow = true;
-	  setupView();
+          modelObject = amfobject.children[0].children[0];
+          modelObject.castShadow = true;
+          modelObject.receiveShadow = true;
+          viewSetup();
         } );
 
       }
 
-      function setupView() { 
+      function loadGCodeModel(localUrl) {
+        const loader = new GCodeLoader();
+        loader.load( localUrl, function ( object ) {
+          modelObject = object;
+          console.log('GCode modelObject = ' + modelObject);
+          console.log('modelObject.name = ' + modelObject.name);
+          console.log('modelObject.children = ' + modelObject.children);
+          console.log('modelObject.children[0].name = ' + modelObject.children[0].name);
+          console.log('modelObject.children[0].material.name = ' + modelObject.children[0].material.name);
+          console.log('modelObject.children[1].name = ' + modelObject.children[1].name);
+          console.log('modelObject.children[1].material.name = ' + modelObject.children[1].material.name);
+
+          viewSetup();
+
+        } );
+
+      }
+
+      function viewSetup() { 
         // Get center and move model
-        mesh.geometry.computeBoundingBox();
-        var center = mesh.geometry.boundingBox.getCenter();
-        var modelSize = mesh.geometry.boundingBox.getSize();
-        mesh.localToWorld( center );
-        mesh.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
-        scene.add( mesh );
+        var boundingBox = new THREE.Box3().setFromObject(modelObject);
+
+        var center = boundingBox.getCenter();
+        var modelSize = boundingBox.getSize();
+        modelObject.localToWorld( center );
+        modelObject.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
+        scene.add( modelObject );
 
         // Get longest side (X or Y)
         var modelLength = ((modelSize.x > modelSize.y) ? modelSize.x : modelSize.y);
