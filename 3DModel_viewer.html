@@ -13,6 +13,7 @@
       import { STLLoader } from 'https://threejs.org/examples/jsm/loaders/STLLoader.js';
       import { AMFLoader } from 'https://threejs.org/examples/jsm/loaders/AMFLoader.js';
       import { GCodeLoader } from 'https://threejs.org/examples/jsm/loaders/GCodeLoader.js';
+      import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
 
       // Get Query String
       var searchParams = new URLSearchParams(window.location.search);
@@ -50,6 +51,8 @@
           loadAMFModel(modelUrl);
         } else if (ext === "gcode") {
           loadGCodeModel(modelUrl);
+        } else if (ext === "gltf") {
+          loadGLTFModel(modelUrl);
         }
 
 
@@ -108,6 +111,14 @@
 
         } );
 
+      }
+
+      function loadGLTFModel(localUrl) {
+        const loader = new GLTFLoader();
+        loader.load( localUrl, function ( gltf ) {
+          modelObject = gltf.scene;
+	  viewSetup();
+        } );
       }
 
       function viewSetup() { 
