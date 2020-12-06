@@ -44,7 +44,8 @@
         // Pick a model loader based on file ending.
         // This is a bit of a hack. I will need to change this.
         var re = /(?:\.([^.]+))?$/;
-        var ext = re.exec(modelUrl)[1];
+        // lets make sure we are looking at the file and not params
+        var ext = re.exec(modelUrl.split('?')[0])[1];
         if (ext === "stl") {
           loadSTLModel(modelUrl);
         } else if (ext === "amf") {
