@@ -16,4 +16,12 @@ Here are the models I have been testing with:
 3DModel_viewer.html?model=https://threejs.org/examples/models/gcode/benchy.gcode
 3DModel_viewer.html?model=https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf
 
-The viewer only supports stl, amf, gcode, and gltf models at the moment and possibly not well. :) 
+The viewer only supports stl, amf, gcode, and gltf models at the moment and possibly not well. :)
+
+Currently supported query string parameters
+
+- model
+		Pass in a model URL to view
+
+- zup
+		Change orientation from standard Z is depth to Z is height. 
