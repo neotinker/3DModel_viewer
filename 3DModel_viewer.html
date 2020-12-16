@@ -14,6 +14,9 @@
       import { AMFLoader } from 'https://threejs.org/examples/jsm/loaders/AMFLoader.js';
       import { GCodeLoader } from 'https://threejs.org/examples/jsm/loaders/GCodeLoader.js';
       import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
+      import { EffectComposer } from 'https://threejs.org/examples/jsm/postprocessing/EffectComposer.js';
+      import { CopyShader} from 'https://threejs.org/examples/jsm/shaders/CopyShader.js';
+      import { RenderPass } from 'https://threejs.org/examples/jsm/postprocessing/RenderPass.js';
 
       // Get Query String
       var searchParams = new URLSearchParams(window.location.search);
@@ -39,7 +42,7 @@
         isZUp = false;
       }
 
-      let camera, scene, renderer, mesh, modelObject;
+      let composer, camera, scene, renderer, mesh, modelObject;
 
       init();
       render();
@@ -51,6 +54,8 @@
         scene = new THREE.Scene();
         scene.background = new THREE.Color( 0x999999 );
         scene.add( new THREE.AmbientLight( 0x999999 ) );
+
+        camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
 
         // Pick a model loader based on file ending.
         // This is a bit of a hack. I will need to change this.
@@ -77,6 +82,11 @@
         container.appendChild( renderer.domElement );
 
         window.addEventListener( 'resize', onWindowResize, false );
+
+        composer = new EffectComposer(renderer);
+        var renderPass = new RenderPass(scene,camera);
+        composer.addPass(renderPass);
+        renderPass.renderToScreen = true;
 
       }
 
@@ -164,8 +174,6 @@
         grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) );
         scene.add( grid );
 
-        camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
-
         // We the model to be a little smaller than window so lets add a fudge factor
         var fudge_offset = 1.25;
 
@@ -204,7 +212,7 @@
       }
 
       function render() {
-        renderer.render( scene, camera );
+        composer.render();
       }
     </script>
   </body>
