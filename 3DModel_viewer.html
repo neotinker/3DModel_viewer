@@ -17,7 +17,7 @@
 
       // Get Query String
       var searchParams = new URLSearchParams(window.location.search);
-      var modelUrl;
+      var modelUrl, isZUp;
 
       // Get model to display
       if (searchParams.has("model")) {
@@ -26,6 +26,17 @@
       } else {
         // Should I load a default model or leave it empty?
         modelUrl = 'https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl'
+      }
+
+      // define "up"
+      if (searchParams.has("zup")) {
+        if (searchParams.getAll("zup")[0] === '1') {
+          isZUp = true;
+        } else {
+          isZUp = false;
+        }
+      } else {
+        isZUp = false;
       }
 
       let camera, scene, renderer, mesh, modelObject;
@@ -123,6 +134,11 @@
       }
 
       function viewSetup() { 
+        if (isZUp) {
+          // change model orientation
+          modelObject.rotation.x = 0 * Math.PI/180;
+        }
+
         // Get center and move model
         var boundingBox = new THREE.Box3().setFromObject(modelObject);
 
