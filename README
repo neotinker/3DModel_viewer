@@ -24,4 +24,8 @@ Currently supported query string parameters
 		Pass in a model URL to view
 
 - zup
-		Change orientation from standard Z is depth to Z is height. 
+		Change orientation from standard Z is depth to Z is height.
+
+- center
+		Controls the automatic centering of a model.
+		Currently we enable centering by default. 
