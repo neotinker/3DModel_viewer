@@ -201,14 +201,22 @@
 
         var cameraDistance = modelScreenSize / Math.tan( fov * Math.PI / 180 );
         camera.up.set( 0, 0, 1 );
-        camera.position.set( 0, -1 * cameraDistance, modelScreenSize );
+        if (centerModel) {
+          camera.position.set( 0, -1 * cameraDistance, modelScreenSize );
+        } else {
+          camera.position.set( center.x, center.y - cameraDistance, modelScreenSize );
+        }
         camera.add( new THREE.PointLight( 0xffffff, 0.8 ) );
         scene.add( camera );
 
         // Camera Control
         const controls = new OrbitControls( camera, renderer.domElement );
         controls.addEventListener( 'change', render );
-        controls.target.set( 0, 0, modelSize.z/2 );
+        if (centerModel) {
+          controls.target.set( 0, 0, modelSize.z/2 );
+        } else {
+          controls.target.set( center.x, center.y, modelSize.z/2 );
+        }
         controls.update();
       }
 
