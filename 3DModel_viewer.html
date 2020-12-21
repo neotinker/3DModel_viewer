@@ -20,7 +20,7 @@
 
       // Get Query String
       var searchParams = new URLSearchParams(window.location.search);
-      var modelUrl, isZUp;
+      var modelUrl, isZUp, centerModel;
 
       // Get model to display
       if (searchParams.has("model")) {
@@ -29,6 +29,17 @@
       } else {
         // Should I load a default model or leave it empty?
         modelUrl = 'https://raw.githubusercontent.com/nophead/Mendel90/master/dibond_E3D/stls/dust_filter.stl'
+      }
+
+      // Center model (default = True) (0 === False, everything else === true)
+      if (searchParams.has("center")){
+        if (searchParams.getAll("center")[0] === '0') {
+          centerModel = false;
+        } else {
+          centerModel = true;
+        }
+      } else {
+        centerModel = true;
       }
 
       // define "up"
@@ -155,7 +166,9 @@
         var center = boundingBox.getCenter();
         var modelSize = boundingBox.getSize();
         modelObject.localToWorld( center );
-        modelObject.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
+        if (centerModel) {
+          modelObject.position.set(center.x * -1, center.y * -1, (center.z * -1) + (modelSize.z / 2) );
+        }
         scene.add( modelObject );
 
         // Get longest side (X or Y)
